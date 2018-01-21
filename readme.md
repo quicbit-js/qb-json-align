@@ -39,7 +39,7 @@ Align does the following:
    operate on the recovered value or key/value.  If the value cannot be completed with ps.next_src, then
    it will still be rewound to parse the new, longer, but still incomplete value when next(ps) is called.
 
-#why have a separate module for qb-json-align?
+# why have a separate module for qb-json-align?
 
 Why did we put this functionality in a separate module from qb-json-next?  Mainly, it is separate because align()
 is only one of many possible strategies for handling split buffers.  This particular approach isolates the handler
