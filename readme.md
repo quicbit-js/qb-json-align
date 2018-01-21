@@ -5,7 +5,11 @@ point.
 
 While qb-json-next handles splits between values and key-values, align() goes one step further to
 provide seamless
-parsing across JSON buffers *split at any point*.  
+parsing across JSON buffers *split at any point*.
+
+# install
+
+npm install qb-json-align  
 
 # usage
 
