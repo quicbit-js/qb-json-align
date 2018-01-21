@@ -1,22 +1,24 @@
 # qb-json-align
 
-#align()
-
 qb-json-align works with qb-json-next to provide seamless parsing across JSON buffers split at any arbitrary 
 point.
 
+# align(ps)
 
-While qb-json-next handles splits between values and key-values, align() allows seamless
-parsing across any split JSON.
+    ps - the parse-state used by qb-json-next with token and offset information (see qb-json-next)
 
-    // parse normally as explained in qb-json-next    
+While qb-json-next handles splits between values and key-values, align() goes one step further to
+provide seamless
+parsing across JSON buffers *split at any point*.  Parsing is just like normal parsing with qb-json-next,
+but with an added align() step after ps.next_src is set.
+
     var next = require('qb-json-next')
     var align = require('qb-json-align')
 
     var ps = {}
     var src
     while (ps.next_src = get_next_buffer_somehow()) {
-        align(ps)   // arrange ps.src and ps.next_src so that they do not split or separate keys or values
+        align(ps)  
         while (next(ps)) {
             // use ps information to process tokens (see qb-json-next for details)
         }
