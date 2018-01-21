@@ -1,0 +1,33 @@
+{
+  "name": "qb-json-align",
+  "version": "1.0.0",
+  "description": "qb-json-align",
+  "homepage": "https://github.com/quicbit-js/qb-json-align",
+  "url": "https://github.com/quicbit-js/qb-json-align/issues",
+  "email": "support@quicbit.com",
+  "repository": "quicbit-js/qb-json-align",
+  "dependencies": {
+    "qb-json-next": "^1.0.0"
+  },
+  "devDependencies": {
+    "qb-utf8-ez": "^3.1.1",
+    "tape": "^4.8.0",
+    "test-kit": "^2.7.2"
+  },
+  "scripts": {
+    "test": "tape test.js",
+    "cov": "tap --coverage-report=html test.js"
+  },
+  "keywords": [
+    "fast",
+    "compact",
+    "minimal",
+    "qb",
+    "qb1",
+    "quicbit",
+    "data",
+    "performance"
+  ],
+  "author": "Matthew Voss",
+  "license": "ISC"
+}
