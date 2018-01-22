@@ -16,7 +16,7 @@
 [code-image]:      https://www.bithound.io/github/quicbit-js/qb-json-align/badges/code.svg
 [code-link]:       https://www.bithound.io/github/quicbit-js/qb-json-align
 
-qb-json-align works with qb-json-next to provide seamless parsing across JSON buffers split at any arbitrary 
+qb-json-align works with [qb-json-next](https://github.com/quicbit-js/qb-json-next) to provide seamless parsing across JSON buffers split at any arbitrary 
 point.
 
 While qb-json-next handles splits between values and key-values, align() goes one step further to
