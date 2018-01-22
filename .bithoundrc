@@ -1,0 +1,6 @@
+{
+  "critics": {
+    "lint": { "engine": "standard" },
+    "test": [ "test.js", "perf/*.js" ]
+  }
+}
