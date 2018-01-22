@@ -46,7 +46,7 @@ function align (ps) {
       if (ps_off < ps.lim) {
         align_src(ps, ps_off, ns_lim)
       }
-    return
+      return
 
     case POS.O_AK: case POS.O_BV:
       // find next position in ps.next_src
@@ -58,7 +58,6 @@ function align (ps) {
       next(nps)
       if (nps.tok === TOK.DEC && nps.vlim < nps.lim) { nps.vlim++ }   // shift truncated decimal
       align_src(ps, ps.koff, nps.vlim)
-      return
   }
 }
 
@@ -69,17 +68,17 @@ function trunc_info (ps) {
   var ret = {}
   switch (ps.pos) {
     case POS.O_BF: case POS.O_BK:
-    ret.ns_lim = complete_val(ps.src, ps.koff, ps.klim, ps.next_src)
-    ret.npos = POS.O_AK
-    break
+      ret.ns_lim = complete_val(ps.src, ps.koff, ps.klim, ps.next_src)
+      ret.npos = POS.O_AK
+      break
     case POS.O_BV:
       ret.ns_lim = complete_val(ps.src, ps.voff, ps.vlim, ps.next_src)
       ret.npos = POS.O_AV
       break
     case POS.A_BF: case POS.A_BV:
-    ret.ns_lim = complete_val(ps.src, ps.voff, ps.vlim, ps.next_src)
-    ret.npos = POS.A_AV
-    break
+      ret.ns_lim = complete_val(ps.src, ps.voff, ps.vlim, ps.next_src)
+      ret.npos = POS.A_AV
+      break
   }
   if (ret.ns_lim < 0) {
     // could not complete truncated value - pos unchanged
@@ -128,8 +127,8 @@ function concat_src (src1, off1, lim1, src2, off2, lim2) {
   var len1 = lim1 - off1
   var len2 = lim2 - off2
   var ret = new Uint8Array(len1 + len2)
-  for (var i=0; i < len1; i++) { ret[i] = src1[i + off1] }
-  for (i=0; i < len2; i++) { ret[i + len1] = src2[i + off2] }
+  for (var i = 0; i < len1; i++) { ret[i] = src1[i + off1] }
+  for (i = 0; i < len2; i++) { ret[i + len1] = src2[i + off2] }
   return ret
 }
 
