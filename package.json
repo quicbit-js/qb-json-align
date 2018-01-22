@@ -1,13 +1,13 @@
 {
   "name": "qb-json-align",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "qb-json-align",
   "homepage": "https://github.com/quicbit-js/qb-json-align",
   "url": "https://github.com/quicbit-js/qb-json-align/issues",
   "email": "support@quicbit.com",
   "repository": "quicbit-js/qb-json-align",
   "dependencies": {
-    "qb-json-next": "^1.0.0"
+    "qb-json-next": "^1.0.1"
   },
   "devDependencies": {
     "qb-utf8-ez": "^3.1.1",
