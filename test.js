@@ -28,7 +28,9 @@ function capture_next_src (sources) {
     var toks = []
     ps.next_src = utf8.buffer(sources.shift())
     align(ps)
-    while(next(ps)) { toks.push(next.tokstr(ps)) }
+    while(next(ps, {err: function () {}})) {    // suppress errors (they are shown in token result)
+      toks.push(next.tokstr(ps))
+    }
     ret.push(toks.join(','))
   }
   ret.push(next.tokstr(ps, true))
