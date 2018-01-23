@@ -86,6 +86,7 @@ function trunc_info (ps) {
     if (ret.ns_lim < ps.next_src.length) { ret.ns_lim++ }   // early stop means BAD_VALUE - include byte in selection
     ret.pos = ps.pos
   } else {
+    // completed truncated value
     if (ps.ecode === ECODE.TRUNC_DEC && ret.ns_lim < ps.next_src.length) {
       ret.ns_lim++    // include byte after decimal (avoid truncation in src)
     }
@@ -97,6 +98,7 @@ function align_src (ps, ps_off, ns_lim) {
   // combine ps.src with ps.next_src selection
   var ns_remain = ns_lim === ps.next_src.length ? null : ps.next_src.slice(ns_lim)
   ps.src = concat_src(ps.src, ps_off, ps.lim, ps.next_src, 0, ns_lim)
+  ps.soff += ps_off
   // ps.src is being used.  rewind position.
   ps.pos = in_obj(ps.pos) ? POS.O_BK : POS.A_BV
   // rewind position to be at value or key/value start
