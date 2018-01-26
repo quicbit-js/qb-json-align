@@ -45,9 +45,13 @@ but with an added align() step after ps.next_src is set.
     }
 
 
-# align(ps)
+# align(ps, opt)
 
-    ps - the parse-state used by qb-json-next with token and offset information (see qb-json-next)
+    ps              -   the parse-state used by qb-json-next with token and offset information (see qb-json-next)
+    opt
+        new_buf     -   function, if provided, new_buf(length) will be called to allocate new buffers, rather
+                        than always creating Uint8Array.  To create a node Buffer(), for example, use:
+                            { new_buf: function (len) { return new Buffer(len) } }
 
 Align does the following:
 

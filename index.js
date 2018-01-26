@@ -19,7 +19,8 @@ var POS = next.POS
 var TOK = next.TOK
 var ECODE = next.ECODE
 
-function align (ps) {
+function align (ps, opt) {
+  opt = opt || {}
   if (ps.next_src == null || ps.next_src.length === 0) {
     ps.next_src = null
     return
@@ -33,7 +34,7 @@ function align (ps) {
     ns_lim = tinfo.ns_lim
     if (tinfo.pos === ps.pos) {
       // truncated value not complete
-      align_src(ps, ps_off, ns_lim)
+      align_src(ps, ps_off, ns_lim, opt)
       return
     } else {
       npos = tinfo.npos // advance position
@@ -44,7 +45,7 @@ function align (ps) {
   switch (npos) {
     case POS.O_BF: case POS.O_BK: case POS.O_AV: case POS.A_BF: case POS.A_BV: case POS.A_AV:
       if (ps_off < ps.lim) {
-        align_src(ps, ps_off, ns_lim)
+        align_src(ps, ps_off, ns_lim, opt)
       }
       return
 
@@ -57,7 +58,7 @@ function align (ps) {
       next._init(nps)
       next(nps)
       if (nps.tok === TOK.DEC && nps.vlim < nps.lim) { nps.vlim++ }   // shift truncated decimal
-      align_src(ps, ps.koff, nps.vlim)
+      align_src(ps, ps.koff, nps.vlim, opt)
   }
 }
 
@@ -94,10 +95,10 @@ function trunc_info (ps) {
   return ret
 }
 
-function align_src (ps, ps_off, ns_lim) {
+function align_src (ps, ps_off, ns_lim, opt) {
   // combine ps.src with ps.next_src selection
   var ns_remain = ns_lim === ps.next_src.length ? null : ps.next_src.slice(ns_lim)
-  ps.src = concat_src(ps.src, ps_off, ps.lim, ps.next_src, 0, ns_lim)
+  ps.src = concat_src(ps.src, ps_off, ps.lim, ps.next_src, 0, ns_lim, opt)
   ps.soff += ps_off
   // ps.src is being used.  rewind position.
   ps.pos = in_obj(ps.pos) ? POS.O_BK : POS.A_BV
@@ -125,10 +126,10 @@ function complete_val (src1, voff, vlim, src2) {
   }
 }
 
-function concat_src (src1, off1, lim1, src2, off2, lim2) {
+function concat_src (src1, off1, lim1, src2, off2, lim2, opt) {
   var len1 = lim1 - off1
   var len2 = lim2 - off2
-  var ret = new Uint8Array(len1 + len2)
+  var ret = opt.new_buf ? opt.new_buf(len1 + len2) : new Uint8Array(len1 + len2)
   for (var i = 0; i < len1; i++) { ret[i] = src1[i + off1] }
   for (i = 0; i < len2; i++) { ret[i + len1] = src2[i + off2] }
   return ret

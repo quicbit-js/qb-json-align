@@ -175,6 +175,26 @@ test('soff and vcount', function (t) {
   })
 })
 
+test('new_buf', function (t) {
+  t.table_assert([
+    [ 's1',    's2',        'new_buf',    'exp' ],
+    [ '"a,',    '", "b"',   null,         '[object Uint8Array]' ],
+    [ '"a,',    '", "b"',   'Array',      '[object Array]' ],
+    [ '"a,',    '", "b"',   'Buffer',     '[object Uint8Array]' ],    // Buffer is a Uint8Array
+    [ '"a,',    '", "b"',   'Uint8Array', '[object Uint8Array]' ],
+  ], function (s1, s2, new_buf) {
+    var ps = { src: utf8.buffer(s1), next_src: utf8.buffer(s2) }
+    next(ps)
+    switch (new_buf) {
+      case 'Array' : new_buf = function (l) { return new Array(l) }; break
+      case 'Buffer' : new_buf = function (l) { return new Buffer(l) }; break
+      case 'Uint8Array': new_buf = function (l) { return new Uint8Array(l) }; break
+    }
+    align(ps, {new_buf: new_buf})
+    return Object.prototype.toString.call(ps.src)
+  })
+})
+
 test('align errors', function (t) {
   t.table_assert([
     [ 'src1',    'src2',    'exp' ],
