@@ -2,19 +2,10 @@
 
 [![npm][npm-image]][npm-url]
 [![downloads][downloads-image]][npm-url]
-[![bitHound Dependencies][proddep-image]][proddep-link]
-[![dev dependencies][devdep-image]][devdep-link]
-[![code analysis][code-image]][code-link]
 
 [npm-image]:       https://img.shields.io/npm/v/qb-json-align.svg
 [downloads-image]: https://img.shields.io/npm/dm/qb-json-align.svg
 [npm-url]:         https://npmjs.org/package/qb-json-align
-[proddep-image]:   https://www.bithound.io/github/quicbit-js/qb-json-align/badges/dependencies.svg
-[proddep-link]:    https://www.bithound.io/github/quicbit-js/qb-json-align/master/dependencies/npm
-[devdep-image]:    https://www.bithound.io/github/quicbit-js/qb-json-align/badges/devDependencies.svg
-[devdep-link]:     https://www.bithound.io/github/quicbit-js/qb-json-align/master/dependencies/npm
-[code-image]:      https://www.bithound.io/github/quicbit-js/qb-json-align/badges/code.svg
-[code-link]:       https://www.bithound.io/github/quicbit-js/qb-json-align
 
 qb-json-align works with [qb-json-next](https://github.com/quicbit-js/qb-json-next) to provide seamless parsing across JSON buffers split at any arbitrary 
 point.
