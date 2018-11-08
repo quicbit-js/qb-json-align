@@ -21,18 +21,26 @@ var next = require('qb-json-next')
 
 var align = require('.')
 
-function capture_next_src (sources) {
+function capture_next_src (sources, include_values) {
   var ret = []
   var ps = {}
-  while (sources.length) {
+  sources.forEach(function (next_src) {
     var toks = []
-    ps.next_src = utf8.buffer(sources.shift())
+    ps.next_src = utf8.buffer(next_src)
     align(ps)
     while(next(ps, {err: function () {}})) {    // suppress errors (they are shown in token result)
-      toks.push(next.tokstr(ps))
+      var tokstr = next.tokstr(ps)
+      if (include_values) {
+        var values = '[' + ps.src.slice(ps.voff, ps.vlim).join(',') + ']'
+        if (ps.klim > ps.koff) {
+          values = '[' + ps.src.slice(ps.koff, ps.klim).join(',') + ']:' + values
+        }
+        tokstr += ':' + values
+      }
+      toks.push(tokstr)
     }
     ret.push(toks.join(','))
-  }
+  })
   ret.push(next.tokstr(ps, true))
   return ret
 }
@@ -129,13 +137,31 @@ test('align incomplete object', function (t) {
 
 test('align escaped strings', function (t) {
   t.table_assert([
-    [ 'src1',     'src2',   'exp' ],
-    // [ '["',       'a\\""',      [ '[@0', 's5@0', '!@5:A_AV:[' ] ],
-    // [ '["a',      '\\""',      [ '[@0', 's5@0', '!@5:A_AV:[' ] ],
-    [ '["a\\',     '""',      [ '[@0', 's5@0', '!@5:A_AV:[' ] ],
-    // [ '["a\\"',     '"',      [ '[@0', 's5@0', '!@5:A_AV:[' ] ],
-  ], function (src1, src2) {
-    return capture_next_src([src1, src2])
+    [ 'sources',                          'exp' ],
+    '# quote: 92 34',
+    [ [ [91, 34], [92, 34, 34] ],         [ '[@0:[91]', 's4@0:[34,92,34,34]', '!@4:A_AV:[' ] ],
+    [ [ [91, 34, 92], [34, 34] ],         [ '[@0:[91]', 's4@0:[34,92,34,34]', '!@4:A_AV:[' ] ],
+    [ [ [91, 34, 92, 34], [34] ],         [ '[@0:[91]', 's4@0:[34,92,34,34]', '!@4:A_AV:[' ] ],
+    '# slash: [ 92 92',
+    [ [ [91, 34], [92, 92, 34] ],         [ '[@0:[91]', 's4@0:[34,92,92,34]', '!@4:A_AV:[' ] ],
+    [ [ [91, 34, 92], [92, 34] ],         [ '[@0:[91]', 's4@0:[34,92,92,34]', '!@4:A_AV:[' ] ],
+    [ [ [91, 34, 92, 92], [34] ],         [ '[@0:[91]', 's4@0:[34,92,92,34]', '!@4:A_AV:[' ] ],
+    '# slash quote: [ 92 92 92 34',
+    [ [ [91], [34, 92, 92, 92, 34, 34] ], [ '[@0:[91]', 's6@0:[34,92,92,92,34,34]', '!@6:A_AV:[' ] ],
+    [ [ [91, 34], [92, 92, 92, 34, 34] ], [ '[@0:[91]', 's6@0:[34,92,92,92,34,34]', '!@6:A_AV:[' ] ],
+    [ [ [91, 34, 92], [92, 92, 34, 34] ], [ '[@0:[91]', 's6@0:[34,92,92,92,34,34]', '!@6:A_AV:[' ] ],
+    [ [ [91, 34, 92, 92], [92, 34, 34] ], [ '[@0:[91]', 's6@0:[34,92,92,92,34,34]', '!@6:A_AV:[' ] ],
+    [ [ [91, 34, 92, 92, 92], [34, 34] ], [ '[@0:[91]', 's6@0:[34,92,92,92,34,34]', '!@6:A_AV:[' ] ],
+    [ [ [91, 34, 92, 92, 92, 34], [34] ], [ '[@0:[91]', 's6@0:[34,92,92,92,34,34]', '!@6:A_AV:[' ] ],
+    '# slash slash: [ 92 92 92 92',
+    [ [ [91], [34, 92, 92, 92, 92, 34] ], [ '[@0:[91]', 's6@0:[34,92,92,92,92,34]', '!@6:A_AV:[' ] ],
+    [ [ [91, 34], [92, 92, 92, 92, 34] ], [ '[@0:[91]', 's6@0:[34,92,92,92,92,34]', '!@6:A_AV:[' ] ],
+    [ [ [91, 34, 92], [92, 92, 92, 34] ], [ '[@0:[91]', 's6@0:[34,92,92,92,92,34]', '!@6:A_AV:[' ] ],
+    [ [ [91, 34, 92, 92], [92, 92, 34] ], [ '[@0:[91]', 's6@0:[34,92,92,92,92,34]', '!@6:A_AV:[' ] ],
+    [ [ [91, 34, 92, 92, 92], [92, 34] ], [ '[@0:[91]', 's6@0:[34,92,92,92,92,34]', '!@6:A_AV:[' ] ],
+    [ [ [91, 34, 92, 92, 92, 92], [34] ], [ '[@0:[91]', 's6@0:[34,92,92,92,92,34]', '!@6:A_AV:[' ] ],
+  ], function (sources) {
+    return capture_next_src(sources, true)
   })
 })
 

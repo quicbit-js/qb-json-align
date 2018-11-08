@@ -120,12 +120,18 @@ function in_obj (pos) {
   }
 }
 
-function complete_val (src1, voff, vlim, src2) {
-  var c = src1[voff]
+function complete_val (src1, off1, lim1, src2) {
+  var c = src1[off1]
   if (c === 34) {
-    return next._skip_str(src2, 0, src2.length)
+    // count the number of consecutive escapes (BACKSLASH (92)) at the tail of src1
+    var num_esc = 0
+    while (num_esc < (lim1 - off1) && src1[lim1 - num_esc - 1] === 92) {num_esc++}
+    // an odd number of preceding escapes means we don't pass the next (escaped) byte to skip_str for consideration
+    // This works for utf8 multi-byte characters as well because all control characters are ascii (< 128)
+    // while utf8 whole or partial bytes are > 128 and always included.
+    return next._skip_str(src2, num_esc % 2, src2.length)
   } else if (next._TOK_BYTES[c]) {
-    return next._skip_bytes(src2, 0, src2.length, next._TOK_BYTES[c].slice(vlim - voff - 1))
+    return next._skip_bytes(src2, 0, src2.length, next._TOK_BYTES[c].slice(lim1 - off1 - 1))
   } else {
     return next._skip_dec(src2, 0, src2.length)
   }

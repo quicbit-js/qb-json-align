@@ -22,22 +22,13 @@ TokenTransform.prototype = {
     var ps = this.ps
     if (src && src.length) {
       this.buffer_count++
-      var trace = false
       if (ps === null) {
         ps = this.ps = next.new_ps(src)
       } else {
         ps.next_src = src
-        // 87371765 - messed up align
-        if (ps.soff > 87370000) {
-          trace = true
-          console.log('align', ps.soff)
-        }
         align(ps, {new_buf: function (len) { return new Buffer(len )}})
-        if (trace) console.log('aligned', ps.to_obj())
       }
-      while (next(ps) !== 0) {
-        if (trace) console.log('next', ps.to_obj())
-      }   // just process through to let ps collect line count and other stats.
+      while (next(ps) !== 0) {}   // just process through to let ps collect line count and other stats.
       cb()
     }
     else {
@@ -59,6 +50,7 @@ util.inherits(TokenTransform, Transform)
 // var path = '../package.json'
 var path = './bitcoin-transactions.json'
 
-fs.createReadStream(path, { highWaterMark: 1 * 1024 })
+// We use a very low and inefficient highWaterMark to force alignment work for testing.
+fs.createReadStream(path, { highWaterMark: 1024 })  // set highWaterMark to (1024 * 1000) for large files
   .pipe(new TokenTransform())
   .pipe(process.stdout)
