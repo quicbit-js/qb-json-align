@@ -127,6 +127,18 @@ test('align incomplete object', function (t) {
   })
 })
 
+test('align escaped strings', function (t) {
+  t.table_assert([
+    [ 'src1',     'src2',   'exp' ],
+    // [ '["',       'a\\""',      [ '[@0', 's5@0', '!@5:A_AV:[' ] ],
+    // [ '["a',      '\\""',      [ '[@0', 's5@0', '!@5:A_AV:[' ] ],
+    [ '["a\\',     '""',      [ '[@0', 's5@0', '!@5:A_AV:[' ] ],
+    // [ '["a\\"',     '"',      [ '[@0', 's5@0', '!@5:A_AV:[' ] ],
+  ], function (src1, src2) {
+    return capture_next_src([src1, src2])
+  })
+})
+
 test('align array', function (t) {
   t.table_assert([
     [ 'src1',     'src2',   'exp' ],
