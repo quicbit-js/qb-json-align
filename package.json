@@ -7,7 +7,7 @@
   "email": "support@quicbit.com",
   "repository": "quicbit-js/qb-json-align",
   "dependencies": {
-    "qb-json-next": "file:../qb-json-next"
+    "qb-json-next": "^1.1.0"
   },
   "devDependencies": {
     "qb-utf8-ez": "^3.1.1",
