@@ -35,7 +35,7 @@ TokTransform.prototype = {
             this.finish = new Date()
             console.log('values:', ps.vcount, 'end-state:', next.tokstr(ps))
             console.log(this.state)
-            console.log((this.finish - this.start) / 1000)
+            console.log((this.finish - this.start) / 1000, 'seconds')
         }
     },
     _flush: function (cb) {
@@ -47,13 +47,13 @@ util.inherits(TokTransform, Transform)
 
 function parse_file (path, stream_opt) {
     var inp = fs.createReadStream(path, stream_opt)
-    var scantran = new TokTransform(stream_opt)
+    var toktrans = new TokTransform(stream_opt)
 
-    inp.pipe(scantran).pipe(process.stdout)
+    inp.pipe(toktrans).pipe(process.stdout)
 }
 
 // parse_file('../package.json', cb, { highWaterMark: 1024 * 1000000 })
-parse_file('/Users/dad/dev/qzip/cache_150mb.json', { highWaterMark: 1024 * 2048 })
+parse_file('../../dev/json-samples/cache_150mb.json', { highWaterMark: 1024 * 2048 })
 // parse_file('/Users/dad/dev/qb1-scan-sampler/samples/blockchain_unconfirmed.json', cb, { highWaterMark: 1024 * 1000000 })
 
 // var f = fs.readFileSync('/Users/dad/dev/qb1-scan-sampler/samples/blockchain_unconfirmed.json')
