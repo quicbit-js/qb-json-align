@@ -1,6 +1,6 @@
 {
   "name": "qb-json-align",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "qb-json-align",
   "homepage": "https://github.com/quicbit-js/qb-json-align",
   "url": "https://github.com/quicbit-js/qb-json-align/issues",
@@ -11,8 +11,8 @@
   },
   "devDependencies": {
     "qb-utf8-ez": "^3.1.1",
-    "tape": "^4.9.1",
-    "test-kit": "^2.8.7"
+    "tape": "^5.6.3",
+    "test-kit": "^2.9.1"
   },
   "scripts": {
     "test": "tape test.js",
