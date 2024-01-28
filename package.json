@@ -5,7 +5,10 @@
   "homepage": "https://github.com/quicbit-js/qb-json-align",
   "url": "https://github.com/quicbit-js/qb-json-align/issues",
   "email": "support@quicbit.com",
-  "repository": "quicbit-js/qb-json-align",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quicbit-js/qb-json-align.git"
+  },
   "dependencies": {
     "qb-json-next": "^2.1.1"
   },
